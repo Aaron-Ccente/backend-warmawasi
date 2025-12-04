@@ -1,15 +1,24 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// ======================
+// AUTH (login, logout)
+// ======================
+Route::prefix('auth')->group(function () {
+    Route::post('/user/login', [AuthController::class, 'login']);
+    Route::post('/admin/login', [AuthController::class, 'loginAdmin']);
+    
+    // Route::middleware('auth:sanctum')->group(function () {
+    //     Route::post('/logout', [AuthController::class, 'logout']);
+    // });
+});
 
-Route::get('/prueba', function () {
-    return response()->json([
-        'mensaje' => '¡Conexión exitosa desde Laravel!',
-        'status' => 'ok'
-    ]);
+Route::prefix('admin')->group(function () {
+    Route::post('/', [AdminController::class,'createAdmin']);
+    Route::get('/', [AdminController::class,'getAdmins']);
+    Route::get('/:id', [AdminController::class,'getAdminById']);
+    Route::delete('/:id', [AdminController::class,'deleteAdmin']);
 });
