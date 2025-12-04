@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         // Tabla para administrador
-        Schema::create('admin', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('name', length:100)->nullable();
             $table->string('email', length:100)->unique();
             $table->string('password' , length:100);
             $table->unsignedInteger('reserved_at')->nullable();
-            $table->timestamp('create_count')->useCurrent();
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
 
